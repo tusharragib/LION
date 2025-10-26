@@ -92,7 +92,7 @@ class Up(nn.Module):
         return self.block(x)
 
 
-class FBPConvNet(LIONmodel.LIONmodel):
+class RISINGConvNet(LIONmodel.LIONmodel):
     def __init__(
         self,
         geometry_parameters: ct.Geometry,
@@ -222,7 +222,9 @@ class FBPConvNet(LIONmodel.LIONmodel):
         params.up_4_channels = [128, 64, 64]
         params.last_block = [64, 1, 1]
         params.activation = "ReLU"
-        params.model_input_type = LIONmodel.ModelInputType.SINOGRAM
+        # params.model_input_type = LIONmodel.ModelInputType.SINOGRAM
+        params.model_input_type = LIONmodel.ModelInputType.IMAGE
+
         return params
 
     @staticmethod
@@ -255,7 +257,8 @@ class FBPConvNet(LIONmodel.LIONmodel):
     def forward(self, x):
         B, C, W, H = x.shape
 
-        image = fdk(x, self.op)
+        # image = fdk(x, self.op)
+        image = x
         block_1_res = self.block_1_down(image)
         block_2_res = self.block_2_down(self.down_1(block_1_res))
         block_3_res = self.block_3_down(self.down_2(block_2_res))

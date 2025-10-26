@@ -354,7 +354,7 @@ class LIONmodel(nn.Module, ABC):
         if hasattr(options, "geometry"):
             model = cls(
                 model_parameters=options.model_parameters,
-                geometry=options.geometry,
+                geometry_parameters=options.geometry,
             )
         else:
             model = cls(model_parameters=options.model_parameters)
