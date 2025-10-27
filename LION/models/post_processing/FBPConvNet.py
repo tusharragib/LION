@@ -9,9 +9,7 @@
 from typing import Optional
 import torch
 import torch.nn as nn
-from LION.models import LIONmodel
-#from LION.utils.parameter import LIONParameter
-from LION.models.LIONmodel import LIONModelParameter
+from LION.models.LIONmodel import LIONModelParameter, LIONmodel
 import LION.CTtools.ct_geometry as ct
 from LION.classical_algorithms.fdk import fdk
 # Implementation of:
@@ -190,24 +188,7 @@ class FBPConvNet(LIONmodel.LIONmodel):
             )
         )
 
-    '''    @staticmethod
-    def default_parameters():
-        FBPConvNet_params = FBPConvNetParams(
-            [1, 64, 64, 64],
-            [64, 128, 128],
-            [128, 256, 256],
-            [256, 512, 512],
-            [512, 1024, 1024],
-            [1024, 512, 512],
-            [512, 256, 256],
-            [256, 128, 128],
-            [128, 64, 64],
-            [64, 1, 1],
-            "ReLU",
-        )
 
-        return FBPConvNet_params
-    '''
     @staticmethod
     def default_parameters():
         params = LIONModelParameter()
