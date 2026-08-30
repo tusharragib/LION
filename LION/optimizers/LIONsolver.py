@@ -595,10 +595,15 @@ class LIONsolver(ABC, metaclass=ABCMeta):
             test_loss = np.array([])
             for data, target in tqdm(self.test_loader):
                 if self.model.get_input_type() == ModelInputType.IMAGE:
-                    data = fdk(data, self.op)
-                output = self.model(data.to(self.device))
+                    # For 3D volumes, data is already reconstructed, skip FDK
+                    # Check if data is 5D (batch, channel, depth, height, width) - indicates 3D volumes
+                    if len(data.shape) == 5:
+                        reconstructed_data = data
+                    else:
+                        reconstructed_data = fdk(data, self.op)
+                output = self.model(reconstructed_data.to(self.device))
                 test_loss = np.append(
-                    test_loss, self.testing_fn(output, target.to(self.device))
+                    test_loss, self.testing_fn(output, target.to(self.device)).cpu().numpy()
                 )
 
         if self.verbose:
@@ -764,8 +769,13 @@ class LIONsolver(ABC, metaclass=ABCMeta):
         validation_loss = np.array([])
         for data, targets in tqdm(self.validation_loader):
             if self.model.get_input_type() == ModelInputType.IMAGE:
-                data = fdk(data.to(self.device), self.op)
-                outputs = self.model(data)
+                # For 3D volumes, data is already reconstructed, skip FDK
+                # Check if data is 5D (batch, channel, depth, height, width) - indicates 3D volumes
+                if len(data.shape) == 5:
+                    reconstructed_data = data.to(self.device)
+                else:
+                    reconstructed_data = fdk(data.to(self.device), self.op)
+                outputs = self.model(reconstructed_data)
                 validation_loss = np.append(
                     validation_loss,
                     self.validation_fn(targets.to(self.device), outputs.to(self.device))

@@ -289,6 +289,7 @@ class LIONmodel(nn.Module, ABC):
         # Load the actual pythorch saved data
         data = torch.load(
             fname,
+            weights_only=False,
             map_location=torch.device(torch.cuda.current_device()),
         )
         if len(data) > 1 and not supress_warnings:
@@ -354,14 +355,18 @@ class LIONmodel(nn.Module, ABC):
         if hasattr(options, "geometry"):
             model = cls(
                 model_parameters=options.model_parameters,
-                geometry_parameters=options.geometry,
+                geometry=options.geometry,
             )
         else:
             model = cls(model_parameters=options.model_parameters)
 
         # Load the data into the model we created.
         model.to(torch.cuda.current_device())
-        model.load_state_dict(data.pop("model_state_dict"))
+        if isinstance(data, dict) and 'model_state_dict' in data:
+            state_dict = data.pop('model_state_dict')
+        else:
+            state_dict = data
+        model.load_state_dict(state_dict)
 
         return model, options, data
 
@@ -390,7 +395,11 @@ class LIONmodel(nn.Module, ABC):
             model = cls(model_parameters=options.model_parameters)
         # Load the data into the model we created.
         model.to(torch.cuda.current_device())
-        model.load_state_dict(data.pop("model_state_dict"))
+        if isinstance(data, dict) and 'model_state_dict' in data:
+            state_dict = data.pop('model_state_dict')
+        else:
+            state_dict = data
+        model.load_state_dict(state_dict)
 
         return model, options.unpack(), data
 

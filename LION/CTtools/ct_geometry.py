@@ -98,12 +98,12 @@ class Geometry(LIONParameter):
     @staticmethod
     def parallel_default_parameters(image_shape=None):
         if image_shape is None:
-            image_shape = [1, 512, 512]
+            image_shape = [512, 512, 512]
         return Geometry(
             image_shape=image_shape,
             image_size=image_shape,
-            detector_shape=image_shape[0:2],
-            detector_size=image_shape[0:2],
+            detector_shape=image_shape[1:3],
+            detector_size=image_shape[1:3],
             dso=image_shape[1] * 2,
             dsd=image_shape[1] * 4,
             mode="parallel",
@@ -117,8 +117,8 @@ class Geometry(LIONParameter):
         return Geometry(
             image_shape=image_shape,
             image_size=image_shape,
-            detector_shape=image_shape[0:2],
-            detector_size=image_shape[0:2],
+            detector_shape=image_shape[1:3],
+            detector_size=image_shape[1:3],
             dso=image_shape[1] * 2,
             dsd=image_shape[1] * 4,
             mode="parallel",
@@ -133,8 +133,8 @@ class Geometry(LIONParameter):
         return Geometry(
             image_shape=image_shape,
             image_size=image_shape,
-            detector_shape=image_shape[0:2],
-            detector_size=image_shape[0:2],
+            detector_shape=image_shape[1:3],
+            detector_size=image_shape[1:3],
             dso=image_shape[1] * 2,
             dsd=image_shape[1] * 4,
             mode="parallel",

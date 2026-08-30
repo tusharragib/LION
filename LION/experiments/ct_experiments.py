@@ -152,7 +152,7 @@ class LimitedAngleCTRecon(Experiment):
         param = LIONParameter()
         param.name = "Clinical dose limited angular sampling experiment"
         # Parameters for the geometry
-        param.geometry = ctgeo.Geometry.sparse_angle_parameters()
+        param.geometry = ctgeo.Geometry.parallel_default_parameters()
         # Parameters for the noise in the sinogram.
         # Default, 50% of clinical dose.
         param.noise_params = LIONParameter()
